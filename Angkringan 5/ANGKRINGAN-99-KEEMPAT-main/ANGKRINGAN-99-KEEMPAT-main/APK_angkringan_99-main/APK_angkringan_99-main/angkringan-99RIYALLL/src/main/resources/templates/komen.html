@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Comment</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f3f6;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 5px;
+    }
+
+    p {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #555;
+    }
+
+    form .form-row {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    form label {
+      font-weight: bold;
+    }
+
+    form input, form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    form textarea {
+      resize: vertical;
+    }
+
+    .btn {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 15px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .btn.danger {
+      background-color: #dc3545;
+    }
+
+    .comment-card {
+      background: #f9f9f9;
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 12px;
+      position: relative;
+    }
+
+    .comment-card h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .comment-card .meta {
+      color: #007bff;
+      font-style: italic;
+      float: right;
+    }
+
+    .comment-card p {
+      margin: 10px 0;
+    }
+
+    .comment-card .actions {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    .comment-card .actions button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      margin-left: 5px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>comment</h1>
+    <p>Add, edit, and delete comment</p>
+
+    <form id="commentForm">
+      <div class="form-row">
+        <div>
+          <label>Name</label>
+          <input type="text" id="name" required />
+        </div>
+        <div>
+          <label>Profession</label>
+          <input type="text" id="profession" required />
+        </div>
+      </div>
+
+      <div>
+        <label>Comment</label>
+        <textarea id="comment" required></textarea>
+      </div>
+
+      <div class="form-row">
+        <div>
+          <label>Rating (1–5)</label>
+          <input type="number" id="rating" min="1" max="5" required />
+        </div>
+        <button type="submit" class="btn">Add Comment</button>
+      </div>
+    </form>
+
+    <button id="clearAll" class="btn danger">Hapus Semua Komentar</button>
+
+    <div id="commentList"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("commentForm");
+    const commentList = document.getElementById("commentList");
+    const clearBtn = document.getElementById("clearAll");
+
+    let comments = JSON.parse(localStorage.getItem("comments")) || [];
+
+    function renderComments() {
+      commentList.innerHTML = "";
+      comments.forEach((comment, index) => {
+        const card = document.createElement("div");
+        card.className = "comment-card";
+
+        card.innerHTML = `
+          <h3>${comment.name} <span class="meta">${comment.profession}</span></h3>
+          <p>${comment.comment}</p>
+          <p>Rating: ${comment.rating}</p>
+          <div class="actions">
+            <button onclick="editComment(${index})">📝</button>
+            <button onclick="deleteComment(${index})">🗑️</button>
+          </div>
+        `;
+        commentList.appendChild(card);
+      });
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const profession = document.getElementById("profession").value.trim();
+      const comment = document.getElementById("comment").value.trim();
+      const rating = document.getElementById("rating").value;
+
+      const newComment = { name, profession, comment, rating };
+
+      if (form.dataset.editingIndex !== undefined) {
+        comments[form.dataset.editingIndex] = newComment;
+        delete form.dataset.editingIndex;
+      } else {
+        comments.push(newComment);
+      }
+
+      localStorage.setItem("comments", JSON.stringify(comments));
+      renderComments();
+      form.reset();
+    });
+
+    function deleteComment(index) {
+      if (confirm("Hapus komentar ini?")) {
+        comments.splice(index, 1);
+        localStorage.setItem("comments", JSON.stringify(comments));
+        renderComments();
+      }
+    }
+
+    function editComment(index) {
+      const c = comments[index];
+      document.getElementById("name").value = c.name;
+      document.getElementById("profession").value = c.profession;
+      document.getElementById("comment").value = c.comment;
+      document.getElementById("rating").value = c.rating;
+      form.dataset.editingIndex = index;
+    }
+
+    clearBtn.addEventListener("click", () => {
+      if (confirm("Hapus semua komentar?")) {
+        comments = [];
+        localStorage.removeItem("comments");
+        renderComments();
+      }
+    });
+
+    renderComments();
+  </script>
+</body>
+</html>

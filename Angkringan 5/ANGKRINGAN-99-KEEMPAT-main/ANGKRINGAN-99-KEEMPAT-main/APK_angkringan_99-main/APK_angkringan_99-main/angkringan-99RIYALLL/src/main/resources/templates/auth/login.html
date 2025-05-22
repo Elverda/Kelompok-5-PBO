@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome Icons -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+   <style>
+:root {
+        --primary-color: #009910;
+        --secondary-color: #f8f9fa;
+        --text-color: #686767;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        padding: 0;
+        max-width: 900px;
+        margin: 20px;
+      }
+      .top-logo {
+        position: relative;
+        margin-bottom: -20px;
+      }
+      .forms-container {
+        position: relative;
+        width: 100%;
+        height: 550px;
+        perspective: 1000px;
+      }
+
+      .login-container,
+      .register-container {
+        background-color: #f1f3f5;
+        border-radius: 40px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        backface-visibility: hidden;
+      }
+
+      .register-container {
+        transform: rotateY(180deg);
+        z-index: 1;
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+      }
+
+      .forms-container.register-mode .login-container {
+        transform: rotateY(-180deg);
+        height: auto;
+      }
+
+      .forms-container.register-mode .register-container {
+        transform: rotateY(0);
+        z-index: 1;
+      }
+
+      .welcome-panel {
+        background-color: var(--primary-color);
+        color: white;
+        width: 40%;
+        padding: 90px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        border-radius: 20px 0 0 20px;
+      }
+
+      .welcome-panel h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .welcome-panel p {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+      }
+
+      .login-form-panel,
+      .register-form-panel {
+        width: 100%;
+        padding: 40px 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .login-form-panel h2,
+      .register-form-panel h2 {
+        font-size: 2.5rem;
+        font-weight: 00;
+        color: var(--text-color);
+        margin-bottom: 2rem;
+      }
+
+      .form-control {
+        background-color: #f1f3f5;
+        border: none;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+
+      .form-control:focus {
+        box-shadow: 0 0 0 3px rgba(91, 135, 255, 0.25);
+        background-color: #f1f3f5;
+      }
+
+      .input-group-text {
+        background-color: transparent;
+        border: none;
+        color: #6c757d;
+      }
+
+      .btn-toggle {
+        background-color: transparent;
+        color: white;
+        border: 2px solid white;
+        border-radius: 50px;
+        padding: 10px 30px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .btn-toggle:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+      }
+
+      .btn-submit {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 15px;
+        font-weight: 500;
+        width: 100%;
+        margin-top: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-submit:hover {
+        background-color: #009910;
+        box-shadow: 0 5px 15px rgba(91, 135, 255, 0.3);
+      }
+
+      .forgot-password {
+        text-align: right;
+        display: block;
+        color: #6c757d;
+        text-decoration: none;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+      }
+
+      .forgot-password:hover {
+        color: var(--primary-color);
+      }
+
+      .social-login {
+        margin-top: 30px;
+      }
+
+      .social-label {
+        color: #6c757d;
+        font-size: 0.9rem;
+        text-align: center;
+        margin-bottom: 15px;
+      }
+
+      .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .social-btn {
+        width: 45px;
+        height: 45px;
+        border-radius: 10px;
+        background-color: white;
+        border: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+      }
+
+      .social-btn:hover {
+        background-color: #f8f9fa;
+        transform: translateY(-3px);
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+        justify-content: center; /* agar tetap di tengah */
+        gap: 10px; /* jarak antara ikon dan teks */
+        color: rgb(26, 90, 8);
+        margin-top: -30px;
+        border-radius: 20px;
+      }
+
+      .icon-shop {
+        font-size: 50px; /* sesuaikan ukuran ikon */
+        color: rgb(26, 90, 8);
+      }
+
+      .logo-text {
+        font-weight: bold;
+        font-size: 20px; /* sesuaikan ukuran teks */
+      }
+      .icon-google {
+        color: #db4437;
+      }
+
+      .icon-facebook {
+        color: #4267b2;
+      }
+
+      .icon-github {
+        color: #333;
+      }
+
+      .icon-linkedin {
+        color: #0e76a8;
+      }
+
+      /* Animasi transisi */
+      .container {
+        animation: fadeIn 0.7s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(20px);
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 750px) {
+        .login-container,
+        .register-container {
+          flex-direction: column;
+          height: auto;
+          min-height: 500px;
+        }
+
+        .welcome-panel {
+          width: 100%;
+          padding: 30px;
+          border-radius: 20px 20px 0 0;
+        }
+
+        .login-form-panel,
+        .register-form-panel {
+          width: 100%;
+          padding: 30px;
+        }
+      }
+   </style>
+  </head>
+  <body src="https://images.pexels.com/photos/1855214/pexels-photo-1855214.jpeg" alt="Cafe Interior" class="w-12 h-12">
+    <div class="container">
+      <div class="forms-container">
+        <!-- LOGIN FORM -->
+        <div class="login-container">
+          <!-- Panel selamat datang -->
+          <div class="welcome-panel">
+            <button class="logo-container">
+              <i class="fa-solid fa-shop icon-shop"></i>
+              <span class="logo-text">Angkringan 99</span>
+            </button>
+            <h2>Hello, Welcome!</h2>
+            <p>Mboten kagungan akun ?</p>
+            <button class="btn btn-toggle" id="register-toggle-btn">
+              Register
+            </button>
+          </div>
+
+          <!-- Panel form login -->
+          <div class="login-form-panel">
+            <h2>Login</h2>
+            <form action="/auth/login" method="post">
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Username"
+                  aria-label="Username"
+                  name="username"
+                  required
+                />
+                <span class="input-group-text">
+                  <i class="fas fa-user"></i>
+                </span>
+              </div>
+
+              <div class="input-group mb-3">
+                <input
+                  type="password"
+                  class="form-control"
+                  placeholder="Password"
+                  aria-label="Password"
+                  name="password"
+                  required
+                />
+                <span class="input-group-text">
+                  <i class="fas fa-lock"></i>
+                </span>
+              </div>
+
+              <a href="#" class="forgot-password">Forgot password?</a>
+
+              <button type="submit" class="btn btn-submit">Login</button>
+              <p
+                th:if="${error}"
+                th:text="${error}"
+                class="text-danger text-center mt-3"
+              ></p>
+            </form>
+
+            <div class="social-login">
+              <p class="social-label">or login with social platforms</p>
+              <div class="social-icons">
+                <button class="social-btn">
+                  <i class="fab fa-google icon-google"></i>
+                </button>
+                <button class="social-btn">
+                  <i class="fab fa-facebook-f icon-facebook"></i>
+                </button>
+                <button class="social-btn">
+                  <i class="fab fa-github icon-github"></i>
+                </button>
+                <button class="social-btn">
+                  <i class="fab fa-linkedin-in icon-linkedin"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- REGISTER FORM -->
+        <div class="register-container">
+          <!-- Panel selamat datang register -->
+          <div class="welcome-panel">
+            <h2>Join Us!</h2>
+            <p>Sampun kagungan akun?</p>
+            <button type="button" class="btn btn-toggle" id="login-toggle-btn">
+              Login
+            </button>
+          </div>
+
+          <!-- Panel form register -->
+          <div class="register-form-panel">
+            <h2>Create Account</h2>
+            <form action="/auth/register" method="post">
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Username"
+                  aria-label="Username"
+                  name="username"
+                  required
+                />
+                <span class="input-group-text">
+                  <i class="fas fa-user"></i>
+                </span>
+              </div>
+
+              <div class="input-group">
+                <input
+                  type="email"
+                  class="form-control"
+                  placeholder="Email"
+                  aria-label="Email"
+                  name="email"
+                  required
+                />
+                <span class="input-group-text">
+                  <i class="fas fa-envelope"></i>
+                </span>
+              </div>
+
+              <div class="input-group">
+                <input
+                  type="password"
+                  class="form-control"
+                  placeholder="Password"
+                  aria-label="Password"
+                  name="password"
+                  required
+                  minlength="2"
+                />
+                <span class="input-group-text">
+                  <i class="fas fa-lock"></i>
+                </span>
+              </div>
+
+              <button type="submit" class="btn btn-submit">Register</button>
+              <p
+                th:if="${error}"
+                th:text="${error}"
+                class="text-danger text-center mt-3"
+              ></p>
+            </form>
+
+            <div class="social-login">
+              <p class="social-label">or register with social platforms</p>
+              <div class="social-icons">
+                <button class="social-btn">
+                  <i class="fab fa-google icon-google"></i>
+                </button>
+                <button class="social-btn">
+                  <i class="fab fa-facebook-f icon-facebook"></i>
+                </button>
+                <button class="social-btn">
+                  <i class="fab fa-github icon-github"></i>
+                </button>
+                <button class="social-btn">
+                  <i class="fab fa-linkedin-in icon-linkedin"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+       // Script untuk menangani transisi antara login dan register
+      const registerToggleBtn = document.getElementById("register-toggle-btn");
+      const loginToggleBtn = document.getElementById("login-toggle-btn");
+      const formsContainer = document.querySelector(".forms-container");
+
+      registerToggleBtn.addEventListener("click", () => {
+        formsContainer.classList.add("register-mode");
+      });
+
+      loginToggleBtn.addEventListener("click", () => {
+        formsContainer.classList.remove("register-mode");
+      });
+    </script>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
