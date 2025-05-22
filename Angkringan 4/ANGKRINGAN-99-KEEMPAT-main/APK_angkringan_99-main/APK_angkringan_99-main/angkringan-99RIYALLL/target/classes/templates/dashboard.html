@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu Makanan - Restoran Kita</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome untuk ikon -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+    html{
+    scroll-behavior: smooth;
+}
+
+.menu-title {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #2c3e50;
+  }
+
+  .menu-underline {
+    width: 70px;
+    height: 4px;
+    background-color: #2ecc71;
+    margin: 0 auto 30px;
+  }
+
+  .menu-categories {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+
+  .menu-categories .btn {
+    margin: 0 8px;
+    border-radius: 20px;
+    padding: 8px 20px;
+    color: #2c3e50;
+    transition: all 0.3s;
+  }
+
+  .menu-categories .btn.active {
+    background-color: #2ecc71;
+    color: white;
+  }
+
+  .menu-categories .btn:hover:not(.active) {
+    background-color: #eee;
+  }
+
+  .menu-item {
+    margin-bottom: 25px;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s;
+    height: 100%;
+  }
+
+  .menu-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .menu-img-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .menu-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.5s;
+  }
+
+  .menu-item:hover .menu-img {
+    transform: scale(1.05);
+  }
+
+  .menu-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+  }
+
+  .terlaris {
+    background-color: #e74c3c;
+  }
+
+  .baru {
+    background-color: #27ae60;
+  }
+
+  .promo {
+    background-color: #3498db;
+  }
+
+  .menu-details {
+    padding: 15px;
+    background-color: white;
+  }
+
+  .menu-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 18px;
+  }
+
+  .menu-desc {
+    color: #7f8c8d;
+    font-size: 14px;
+    margin-bottom: 10px;
+    min-height: 60px;
+  }
+
+  .menu-price {
+    font-weight: bold;
+    color: #2ecc71;
+    margin-bottom: 10px;
+  }
+
+  .star-rating {
+    color: #f1c40f;
+    margin-bottom: 5px;
+  }
+
+  .star-rating .far {
+    color: #f1c40f;
+  }
+
+  .menu-ratings {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .rating-count {
+    color: #95a5a6;
+    font-size: 14px;
+  }
+
+  .btn-tambah {
+    background-color: white;
+    color: #2ecc71;
+    border: 1px solid #2ecc71;
+    border-radius: 5px;
+    padding: 5px 15px;
+    transition: all 0.3s;
+  }
+
+  .btn-tambah:hover {
+    background-color: #2ecc71;
+    color: white;
+  }
+
+  .btn-tambah i {
+    margin-right: 5px;
+  }
+
+  .load-more {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 40px;
+  }
+
+  .btn-load-more {
+    background-color: #2c3e50;
+    color: white;
+    border-radius: 25px;
+    padding: 10px 25px;
+    transition: all 0.3s;
+  }
+
+  .btn-load-more:hover {
+    background-color: #1a252f;
+    transform: translateY(-3px);
+  }
+
+  /* Fade animation for items */
+  .fade-in {
+    animation: fadeIn 0.5s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .hero-section {
+  min-height: 800px;         /* Tinggi minimum diperbesar */
+  padding: 160px 0 120px 0;  /* Atas dan bawah lebih besar */
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  }
+  .section-title {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+  }
+  .section-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: rgba(40, 167, 69, 0.5);
+  }
+  footer {
+    background-color: #333;
+    color: white;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <img
+            src="assect/Teks paragraf Anda (2).png"
+            alt="Bootstrap"
+            width="50"
+            height="50"
+          />
+        </a>
+        <a class="navbar-brand" href="#">Angkringan 99 </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-light" type="submit">Search</button>
+          </form>
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#Beranda"
+                ><i class="fas fa-home text-white"></i> Beranda</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#Menu"
+                ><i class="fas fa-utensils"></i> Menu</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#Tentang"
+                ><i class="fas fa-info-circle"></i> Tentang</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#Contack" target="_blank">
+                <i class="bi bi-telephone-fill"></i> Contack
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="Beranda"class="hero-section text-center position-relative overflow-hidden">
+    <video autoplay loop muted playsinline class="hero-video position-absolute w-100 h-100" style="object-fit:cover;left:0;top:0;z-index:0;">
+      <source src="img/aa96aa4d-3893-417b-a50a-0ed1a8d3e873.mp4 (1).mp4" type="video/mp4" />
+    </video>
+    <div class="hero-overlay position-absolute w-100 h-100" style="background:rgba(0,0,0,0.6);left:0;top:0;z-index:1;"></div>
+    <div class="container position-relative" style="z-index:2;">
+      <h1 class="display-4 fw-bold text-white">Menu Terbaik Untuk Anda</h1>
+      <p class="lead text-white">
+        Nikmati berbagai pilihan menu lezat berkualitas premium
+      </p>
+      <form th:action="@{/pesan}" method="get">
+        <button type="submit" class="btn btn-success py-3">Pesan Sekarang</button>
+    </form>
+    </div>
+  </section>
+
+    <!--section tentang -->
+    <section id="Tentang" class="py-5 text-center">
+      <div class="container">
+        <h2 class="text-center section-title">Tentang Kami</h2>
+        <p class="text-center">
+         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam ratione illo nam eveniet nesciunt voluptates deserunt impedit iusto? Qui, autem earum harum quae fugiat totam incidunt consectetur deleniti doloribus magnam?
+         Officiis fugit dolores totam amet recusandae voluptates non doloremque nostrum labore error ex qui similique pariatur, rerum illo sit expedita est fugiat. Ipsum, nulla itaque quisquam id reprehenderit soluta rerum.
+         Explicabo iste amet totam? Maxime itaque rem ad doloribus, nobis veritatis minus qui veniam facere sed non nam? Incidunt ab assumenda sint maxime quam, voluptates reiciendis id obcaecati aspernatur. Nihil.
+         Soluta eos quae eum perferendis, aliquam amet aperiam perspiciatis tempora et nam accusamus commodi, accusantium voluptas omnis vel, ducimus fugiat repellendus repudiandae. Ipsa ab veritatis tenetur, corporis sed voluptas temporibus.
+         Accusamus ex rem magni iste! Praesentium aliquid vero saepe dolorem odit doloremque facilis atque, in consequuntur itaque eos voluptatibus nesciunt suscipit. Et, sequi mollitia sit explicabo itaque quod repudiandae aperiam.
+    </div>
+  </section>
+
+    <!-- Kategori Menu -->
+    <section class="py-5 text-center">
+      <div class="container">
+        <h2 class="text-center section-title">Kategori Menu</h2>
+
+        <div class="row justify-content-center">
+          <div class="col-6 col-md-4 col-lg-2 mb-4 text-center">
+            <div class="card py-3">
+              <div class="text-center mb-2">
+                <i class="fas fa-hamburger fa-2x text-danger"></i>
+              </div>
+              <h6>Makanan Utama</h6>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2 mb-4 text-center">
+            <div class="card py-3">
+              <div class="text-center mb-2">
+                <i class="fas fa-pizza-slice fa-2x text-warning"></i>
+              </div>
+              <h6>Cemilan</h6>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2 mb-4 text-center">
+            <div class="card py-3">
+              <div class="text-center mb-2">
+                <i class="fas fa-mug-hot fa-2x text-success"></i>
+              </div>
+              <h6>Minuman</h6>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu Makanan -->
+    <div id="Menu" class="container py-5">
+      <h1 class="menu-title">Menu Makanan</h1>
+      <div class="menu-underline"></div>
+
+      <div class="menu-categories">
+        <button class="btn active" data-category="semua">Semua</button>
+        <button class="btn" data-category="makanan-utama">Makanan Utama</button>
+        <button class="btn" data-category="cemilan">Cemilan</button>
+        <button class="btn" data-category="minuman">Minuman</button>
+      </div>
+
+      <div class="row" id="menu-container">
+        <!-- Makanan Utama -->
+        <div
+          class="col-md-6 col-lg-4 menu-item-container"
+          data-category="makanan-utama"
+        >
+          <div class="card menu-item">
+            <div class="menu-img-container">
+              <img
+                src="isi menu/Nasi Goreng spesial.jpeg"
+                alt="Nasi Goreng Spesial"
+                class="menu-img"
+              />
+              <div class="menu-badge terlaris">Terlaris</div>
+            </div>
+            <div class="menu-details">
+              <h3 class="menu-name">Nasi Goreng Spesial</h3>
+              <p class="menu-desc">
+                Nasi goreng dengan bumbu pilihan, telur, ayam suwiḁ, udang, dan
+                sayuran segar.
+              </p>
+              <p class="menu-price">Rp 45.000</p>
+              <div class="menu-ratings">
+                <div>
+                  <div class="star-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                  </div>
+                  <span class="rating-count">(120)</span>
+                </div>
+                <button class="btn btn-tambah">
+                  <i class="fas fa-cart-plus"></i> Tambah
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="col-md-6 col-lg-4 menu-item-container"
+          data-category="makanan-utama"
+        >
+          <div class="card menu-item">
+            <div class="menu-img-container">
+              <img
+                src="isi menu/Ayam Bakar.jpeg"
+                alt="Ayam Bakar Madu"
+                class="menu-img"
+              />
+            </div>
+            <div class="menu-details">
+              <h3 class="menu-name">Ayam Bakar Madu</h3>
+              <p class="menu-desc">
+                Ayam bakar dengan bumbu madu spesial, disajikan dengan lalapan
+                dan sambal.
+              </p>
+              <p class="menu-price">Rp 55.000</p>
+              <div class="menu-ratings">
+                <div>
+                  <div class="star-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                  </div>
+                  <span class="rating-count">(98)</span>
+                </div>
+                <button class="btn btn-tambah">
+                  <i class="fas fa-cart-plus"></i> Tambah
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="col-md-6 col-lg-4 menu-item-container"
+          data-category="makanan-utama"
+        >
+          <div class="card menu-item">
+            <div class="menu-img-container">
+              <img
+                src="isi menu/Sate ayam.jpeg"
+                alt="Sate Ayam"
+                class="menu-img"
+              />
+              <div class="menu-badge baru">Baru</div>
+            </div>
+            <div class="menu-details">
+              <h3 class="menu-name">Sate Ayam</h3>
+              <p class="menu-desc">
+                Sate ayam dengan bumbu kacang khas, disajikan dengan lontong dan
+                acar.
+              </p>
+              <p class="menu-price">Rp 35.000</p>
+              <div class="menu-ratings">
+                <div>
+                  <div class="star-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                  <span class="rating-count">(156)</span>
+                </div>
+                <button class="btn btn-tambah">
+                  <i class="fas fa-cart-plus"></i> Tambah
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="col-md-6 col-lg-4 menu-item-container"
+          data-category="makanan-utama"
+        >
+          <div class="card menu-item">
+            <div class="menu-img-container">
+              <img
+                src="isi menu/Mie Goreng Seafood.jpeg"
+                alt="Mie Goreng Seafood"
+                class="menu-img"
+              />
+            </div>
+            <div class="menu-details">
+              <h3 class="menu-name">Mie Goreng Seafood</h3>
+              <p class="menu-desc">
+                Mie goreng dengan berbagai seafood segar seperti udang, cumi,
+                dan kerang.
+              </p>
+              <p class="menu-price">Rp 50.000</p>
+              <div class="menu-ratings">
+                <div>
+                  <div class="star-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                  </div>
+                  <span class="rating-count">(87)</span>
+                </div>
+                <button class="btn btn-tambah">
+                  <i class="fas fa-cart-plus"></i> Tambah
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="col-md-6 col-lg-4 menu-item-container"
+          data-category="makanan-utama"
+        >
+          <div class="card menu-item">
+            <div class="menu-img-container">
+              <img
+                src="isi menu/Rendang Sapi.jpeg"
+                alt="Rendang Sapi"
+                class="menu-img"
+              />
+              <div class="menu-badge promo">Promo</div>
+            </div>
+            <div class="menu-details">
+              <h3 class="menu-name">Rendang Sapi</h3>
+              <p class="menu-desc">
+                Rendang sapi dengan rempah pilihan, dimasak hingga empuk dan
+                bumbu meresap.
+              </p>
+              <p class="menu-price">Rp 60.000</p>
+              <div class="menu-ratings">
+                <div>
+                  <div class="star-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                  </div>
+                  <span class="rating-count">(142)</span>
+                </div>
+                <button class="btn btn-tambah">
+                  <i class="fas fa-cart-plus"></i> Tambah
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="col-md-6 col-lg-4 menu-item-container"
+          data-category="makanan-utama"
+        >
+          <div class="card menu-item">
+            <div class="menu-img-container">
+              <img
+                src="isi menu/Gado gado.jpeg"
+                alt="Gado-Gado"
+                class="menu-img"
+              />
+            </div>
+            <div class="menu-details">
+              <h3 class="menu-name">Gado-Gado</h3>
+              <p class="menu-desc">
+                Sayuran segar dengan bumbu kacang khas, telur rebus, dan
+                kerupuk.
+              </p>
+              <p class="menu-price">Rp 30.000</p>
+              <div class="menu-ratings">
+                <div>
+                  <div class="star-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                  </div>
+                  <span class="rating-count">(76)</span>
+                </div>
+                <button class="btn btn-tambah">
+                  <i class="fas fa-cart-plus"></i> Tambah
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cemilan -->
+        <div
+          class="col-md-6 col-lg-4 menu-item-container"
+          data-category="cemilan"
+        >
+          <div class="card menu-item">
+            <div class="menu-img-container">
+              <img
+                src="isi menu/cemilan/Screenshot 2025-05-15 115508.png"
+                alt="Tahu Crispy"
+                class="menu-img"
+              />
+              <div class="menu-badge baru">Baru</div>
+            </div>
+            <div class="menu-details">
+              <h3 class="menu-name">Tahu Crispy</h3>
+              <p class="menu-desc">
+                Tahu yang dibalut tepung renyah dan digoreng hingga garing,
+                disajikan dengan saus spesial.
+              </p>
+              <p class="menu-price">Rp 20.000</p>
+              <div class="menu-ratings">
+                <div>
+                  <div class="star-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                  </div>
+                  <span class="rating-count">(95)</span>
+                </div>
+                <button class="btn btn-tambah">
+                  <i class="fas fa-cart-plus"></i> Tambah
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="col-md-6 col-lg-4 menu-item-container"
+          data-category="cemilan"
+        >
+          <div class="card menu-item">
+            <div class="menu-img-container">
+              <img
+                src="isi menu/cemilan/Screenshot 2025-05-15 115548.png"
+                alt="Lumpia Goreng"
+                class="menu-img"
+              />
+            </div>
+            <div class="menu-details">
+              <h3 class="menu-name">Lumpia Goreng</h3>
+              <p class="menu-desc">
+                Lumpia isi sayuran dan ayam cincang, digoreng hingga garing dan
+                disajikan dengan saus asam manis.
+              </p>
+              <p class="menu-price">Rp 25.000</p>
+              <div class="menu-ratings">
+                <div>
+                  <div class="star-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                  <span class="rating-count">(112)</span>
+                </div>
+                <button class="btn btn-tambah">
+                  <i class="fas fa-cart-plus"></i> Tambah
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="col-md-6 col-lg-4 menu-item-container"
+          data-category="cemilan"
+        >
+          <div class="card menu-item">
+            <div class="menu-img-container">
+              <img
+                src="isi menu/cemilan/Screenshot 2025-05-15 115637.png"
+                alt="Pisang Goreng Keju"
+                class="menu-img"
+              />
+              <div class="menu-badge terlaris">Terlaris</div>
+            </div>
+            <div class="menu-details">
+              <h3 class="menu-name">Pisang Goreng Keju</h3>
+              <p class="menu-desc">
+                Pisang goreng dengan taburan keju parut dan saus coklat.
+              </p>
+              <p class="menu-price">Rp 18.000</p>
+              <div class="menu-ratings">
+                <div>
+                  <div class="star-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                  </div>
+                  <span class="rating-count">(134)</span>
+                </div>
+                <button class="btn btn-tambah">
+                  <i class="fas fa-cart-plus"></i> Tambah
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Minuman -->
+        <div
+          class="col-md-6 col-lg-4 menu-item-container"
+          data-category="minuman"
+        >
+          <div class="card menu-item">
+            <div class="menu-img-container">
+              <img
+                src="isi menu/minuman/Screenshot 2025-05-15 115857.png"
+                alt="Es Teh Manis"
+                class="menu-img"
+              />
+            </div>
+            <div class="menu-details">
+              <h3 class="menu-name">Es Teh Manis</h3>
+              <p class="menu-desc">
+                Teh manis dingin dengan es batu, cocok untuk menemani santap
+                siang Anda.
+              </p>
+              <p class="menu-price">Rp 8.000</p>
+              <div class="menu-ratings">
+                <div>
+                  <div class="star-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                  <span class="rating-count">(178)</span>
+                </div>
+                <button class="btn btn-tambah">
+                  <i class="fas fa-cart-plus"></i> Tambah
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="col-md-6 col-lg-4 menu-item-container"
+          data-category="minuman"
+        >
+          <div class="card menu-item">
+            <div class="menu-img-container">
+              <img
+                src="isi menu/minuman/Screenshot 2025-05-15 115957.png"
+                alt="Jus Alpukat"
+                class="menu-img"
+              />
+              <div class="menu-badge baru">Baru</div>
+            </div>
+            <div class="menu-details">
+              <h3 class="menu-name">Jus Alpukat</h3>
+              <p class="menu-desc">
+                Jus alpukat segar dengan susu kental manis dan es batu.
+              </p>
+              <p class="menu-price">Rp 15.000</p>
+              <div class="menu-ratings">
+                <div>
+                  <div class="star-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                  </div>
+                  <span class="rating-count">(105)</span>
+                </div>
+                <button class="btn btn-tambah">
+                  <i class="fas fa-cart-plus"></i> Tambah
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="col-md-6 col-lg-4 menu-item-container"
+          data-category="minuman"
+        >
+          <div class="card menu-item">
+            <div class="menu-img-container">
+              <img
+                src="isi menu/minuman/Screenshot 2025-05-15 120642.png"
+                alt="Es Kopi Susu"
+                class="menu-img"
+              />
+              <div class="menu-badge terlaris">Terlaris</div>
+            </div>
+            <div class="menu-details">
+              <h3 class="menu-name">Es Kopi Susu</h3>
+              <p class="menu-desc">
+                Kopi dengan campuran susu segar dan gula aren, disajikan dengan
+                es batu.
+              </p>
+              <p class="menu-price">Rp 18.000</p>
+              <div class="menu-ratings">
+                <div>
+                  <div class="star-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                  </div>
+                  <span class="rating-count">(203)</span>
+                </div>
+                <button class="btn btn-tambah">
+                  <i class="fas fa-cart-plus"></i> Tambah
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="load-more">
+        <button class="btn btn-load-more">Muat Lebih Banyak</button>
+      </div>
+    </div> 
+    <!-- Promo Section -->
+    <section class="py-5">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-4 mb-lg-0">
+            <div class="rounded overflow-hidden">
+              <img
+                src="isi menu/special promo.jpeg"
+                alt="Special Promo"
+                class="img-fluid"
+              />
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <h2>Promo Spesial Bulan Ini!</h2>
+            <p class="lead">
+              Dapatkan diskon hingga 30% untuk pemesanan paket keluarga setiap
+              hari Senin-Kamis.
+            </p>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <i class="fas fa-check-circle text-success me-2"></i> Berlaku
+                untuk dine-in dan take away
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-check-circle text-success me-2"></i> Minimal
+                pembelian Rp 200.000
+              </li>
+              <li class="mb-2">
+                <i class="fas fa-check-circle text-success me-2"></i> Khusus
+                member mendapat tambahan diskon 5%
+              </li>
+            </ul>
+            <button class="btn btn-success">Lihat Promo Lainnya</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonial -->
+    <section class="py-5 bg-light text-center">
+      <div class="container">
+        <h2 class="text-center section-title">Apa Kata Pelanggan Kami</h2>
+
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <div class="card h-100 p-4">
+              <div class="d-flex mb-3">
+                <div class="text-warning">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+              </div>
+              <p class="card-text">
+                "Makanan di sini sangat lezat! Terutama nasi goreng spesialnya
+                yang selalu bikin ketagihan. Pelayanannya juga ramah dan cepat."
+              </p>
+              <div class="d-flex align-items-center mt-3">
+                <div class="flex-shrink-0">
+                  <img
+                    src="img/IMG-20250503-WA0020.jpg"
+                    class="rounded-circle"
+                    alt="Customer"
+                    width="50"
+                    height="50"
+                  />
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <h6 class="mb-0">Dewi Lestari</h6>
+                  <small class="text-muted">Food Blogger</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-4">
+            <div class="card h-100 p-4">
+              <div class="d-flex mb-3">
+                <div class="text-warning">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star-half-alt"></i>
+                </div>
+              </div>
+              <p class="card-text">
+                "Saya sering makan di sini bersama keluarga. Porsinya pas dan
+                harganya cukup terjangkau untuk kualitas yang ditawarkan.
+                Recommended!"
+              </p>
+              <div class="d-flex align-items-center mt-3">
+                <div class="flex-shrink-0">
+                  <img
+                    src="img/IMG-20250503-WA0013.jpg"
+                    class="rounded-circle"
+                    alt="Customer"
+                    width="50"
+                    height="50"
+                  />
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <h6 class="mb-0">Budi Santoso</h6>
+                  <small class="text-muted">Pelanggan Setia</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-4">
+            <div class="card h-100 p-4">
+              <div class="d-flex mb-3">
+                <div class="text-warning">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+              </div>
+              <p class="card-text">
+                "Tempat yang nyaman dengan menu yang bervariasi. Sate ayamnya
+                adalah yang terbaik yang pernah saya coba di kota ini!"
+              </p>
+              <div class="d-flex align-items-center mt-3">
+                <div class="flex-shrink-0">
+                  <img
+                    src="img/IMG-20250503-WA0008.jpg"
+                    class="rounded-circle"
+                    alt="Customer"
+                    width="50"
+                    height="50"
+                  />
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <h6 class="mb-0">Anita Wijaya</h6>
+                  <small class="text-muted">Pecinta Kuliner</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-5 bg-success text-white">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center">
+            <h3>Dapatkan Promo Eksklusif</h3>
+            <p>
+              Berlangganan newsletter kami untuk mendapatkan info promo dan menu
+              baru.
+            </p>
+            <div class="input-group mb-3">
+              <input
+                type="email"
+                class="form-control"
+                placeholder="Masukkan email Anda"
+              />
+              <button class="btn btn-dark" type="button">Berlangganan</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="Contack" class="py-4">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-4 mb-md-0">
+            <h5>Restoran Kita</h5>
+            <p>
+              Menyajikan makanan berkualitas dengan cita rasa autentik sejak
+              2010.
+            </p>
+            <div class="d-flex gap-2">
+              <a href="#" class="text-white"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" class="text-white"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4 mb-md-0">
+            <h5>Jam Operasional</h5>
+            <ul class="list-unstyled">
+              <li>Senin - Jumat: 10:00 - 22:00</li>
+              <li>Sabtu - Minggu: 08:00 - 23:00</li>
+              <li>Hari Libur: 09:00 - 22:00</li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h5>Kontak</h5>
+            <ul class="list-unstyled">
+              <li>
+                <i class="fas fa-map-marker-alt me-2"></i> Jl. Uteran-Goranggareng, Bapang, Tulung, Kawedanan, Magetan
+                Regency, East Java 63382
+              </li>
+              <li><i class="fas fa-phone me-2"></i> (+62) 85888008253</li>
+              <li>
+                <i class="fas fa-envelope me-2"></i> info@Angkringan 99.com
+              </li>
+            </ul>
+          </div>
+        </div>
+        <hr class="my-4 bg-light" />
+        <div class="text-center">
+          <small>&copy; © 2025 Angkringan 99. By Kelompok 5.</small>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+  // Initial setup - show all items
+  const menuItems = document.querySelectorAll(".menu-item-container");
+
+  // Category filter functionality
+  const categoryButtons = document.querySelectorAll(
+    ".menu-categories .btn"
+  );
+
+  categoryButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      // Remove active class from all buttons
+      categoryButtons.forEach((btn) => btn.classList.remove("active"));
+
+      // Add active class to clicked button
+      this.classList.add("active");
+
+      // Get selected category
+      const selectedCategory = this.getAttribute("data-category");
+
+      // Filter items
+      menuItems.forEach((item) => {
+        const itemCategory = item.getAttribute("data-category");
+
+        // Reset animation
+        item.classList.remove("fade-in");
+
+        // Filter logic
+        if (
+          selectedCategory === "semua" ||
+          selectedCategory === itemCategory
+        ) {
+          // Show item with animation
+          setTimeout(() => {
+            item.style.display = "block";
+            item.classList.add("fade-in");
+          }, 10);
+        } else {
+          // Hide item
+          item.style.display = "none";
+        }
+      });
+    });
+  });
+
+  // Add to cart button hover effect
+  const addButtons = document.querySelectorAll(".btn-tambah");
+
+  addButtons.forEach((button) => {
+    button.addEventListener("mouseenter", function () {
+      this.innerHTML = '<i class="fas fa-cart-plus"></i> Tambah';
+    });
+
+    button.addEventListener("mouseleave", function () {
+      this.innerHTML = '<i class="fas fa-cart-plus"></i> Tambah';
+    });
+
+    button.addEventListener("click", function () {
+      const originalText = this.innerHTML;
+      this.innerHTML = '<i class="fas fa-check"></i> Ditambahkan';
+
+      setTimeout(() => {
+        this.innerHTML = originalText;
+      }, 1500);
+    });
+  });
+
+  // Load more button functionality
+  const loadMoreBtn = document.querySelector(".btn-load-more");
+
+  loadMoreBtn.addEventListener("click", function () {
+    this.innerHTML =
+      '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...';
+
+    setTimeout(() => {
+      this.innerHTML = "Muat Lebih Banyak";
+      alert("Tidak ada item tambahan untuk dimuat.");
+    }, 1500);
+  });
+});</script>
+  </body>
+  </html>
+   </html>
